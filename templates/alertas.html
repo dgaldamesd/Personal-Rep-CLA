@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Alertas</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/alertas.css">
+</head>
+<body>
+    <main>
+        <nav>
+            <ul>
+                <li><a href="/INICIO" data-text="INICIO">INICIO</a></li>
+                <li><a href="/CONFIG" data-text="CONFIGURACIONES">CONFIGURACIONES</a></li>
+                <li><a href="/ALERTAS" data-text="ALERTAS">ALERTAS</a></li>
+                <li><a href="/ABOUTAPI" data-text="ACERCA DE LA API">ACERCA DE LA API</a></li>
+                <li><a href="/CONTACTO" data-text="CONTACTO">CONTACTO</a></li>
+            </ul>
+        </nav>
+
+        <section id="MAIN-BOX">
+            <section id="BOX1">
+                <h1>BASE DE DATOS DE LLAMADAS</h1>
+    
+                <!-- Formulario para seleccionar la tabla -->
+                <form action="/ALERTAS" method="post">
+                    <label for="tabla">Seleccionar tabla:</label>
+                    <select id="tabla" name="tabla">
+                        {% for tabla in tablas %}
+                            {% if tabla == tabla_seleccionada %}
+                                <option value="{{ tabla }}" selected>{{ tabla }}</option>
+                            {% else %}
+                                <option value="{{ tabla }}">{{ tabla }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="Cambiar Tabla">
+                </form>
+    
+                <div class="table-container">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Destinatario</th>
+                                <th>Mensaje</th>
+                                <th>Respuesta</th>
+                                <th>Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for llamada in llamadas %}
+                            <tr>
+                                <td>{{ llamada[0] }}</td>
+                                <td>{{ llamada[1] }}</td>
+                                <td>{{ llamada[2] }}</td>
+                                <td>{{ llamada[3] }}</td>
+                                <td>{{ llamada[4] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </section>
+
+    </main>
+</body>
+</html>

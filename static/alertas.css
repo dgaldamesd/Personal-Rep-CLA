@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+main {
+    display: flex;
+    background-color: #005C53;
+    width: 100%;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #000;
+    overflow: hidden;
+    width: 25%;
+}
+ul li {
+    list-style: none;
+}
+ul li a {
+    position: relative;
+    display: block;
+    color: transparent;
+    -webkit-text-stroke: 1px #fff;
+    font-size: 2em;
+    font-weight: 900;
+    text-decoration: none;
+    line-height: 1.2em;
+    padding-bottom: 10px;
+}
+ul li a:hover {
+    color: #fff;
+    -webkit-text-stroke: 1px #000;
+    transition: 0.5s;
+}
+ul li a:before,
+ul li a:after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: 0.5s;
+}
+ul li a:hover:before {
+    color: #38184C;
+    z-index: 1;
+    -webkit-text-stroke: 1px #000;
+    transform: translate(10px,-10px);
+}
+ul li a:hover:after {
+    color: #005C53;
+    z-index: 2;
+    -webkit-text-stroke: 1px #000;
+    transform: translate(20px,-20px);
+}
+
+
+#MAIN-BOX {
+    display: flex;
+    justify-content: space-around;
+    width: 85%;
+}
+
+#BOX1 {
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px;
+    width: 95%;
+}
+
+#BOX1 h1 {
+    text-align: center;
+    color: #333;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    color: #333;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    text-align: left;
+  }
+  
+  th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+

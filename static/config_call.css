@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+main {
+    display: flex;
+    background-color: #413d3d;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #000;
+    overflow: hidden;
+    width: 25%;
+}
+
+ul li {
+    list-style: none;
+}
+
+ul li a {
+    position: relative;
+    display: block;
+    color: transparent;
+    -webkit-text-stroke: 1px #fff;
+    font-size: 2em;
+    font-weight: 900;
+    text-decoration: none;
+    line-height: 1.2em;
+    padding-bottom: 10px;
+}
+
+ul li a:hover {
+    color: #fff;
+    -webkit-text-stroke: 1px #000;
+    transition: 0.5s;
+}
+
+ul li a:before,
+ul li a:after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: 0.5s;
+}
+
+ul li a:hover:before {
+    color: #38184C;
+    z-index: 1;
+    -webkit-text-stroke: 1px #000;
+    transform: translate(10px,-10px);
+}
+
+ul li a:hover:after {
+    color: #c8ff00;
+    z-index: 2;
+    -webkit-text-stroke: 1px #000;
+    transform: translate(20px,-20px);
+}
+
+
+
+
+#MAIN-BOX {
+    display: flex;
+    justify-content: space-around;
+    width: 85%;
+}
+
+#BOX1 {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 10px;
+    width: 50%;
+    background-color: white;
+    border-radius: 30px;
+    height: 50%;
+}
+
+h1 {
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}

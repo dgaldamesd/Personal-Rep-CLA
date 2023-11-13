@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Parámetros</title>
+    <link rel="stylesheet" href="static/config_call.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            // Intercepta el envío del formulario
+            $('form').submit(function(e){
+                e.preventDefault();  // Evita la recarga de la página
+
+                // Realiza la solicitud AJAX
+                $.ajax({
+                    type: 'POST',
+                    url: '/CONFIG_CALL_BACKUP',  // Cambiado a /CONFIG_CALL_BACKUP
+                    data: $(this).serialize(),
+                    success: function(response){
+                        alert(response); // Muestra una alerta con el mensaje de éxito (puedes cambiar esto según tus necesidades)
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <main>
+        <nav>
+            <ul>
+                <li><a href="/INICIO" data-text="INICIO">INICIO</a></li>
+                <li><a href="/CONFIG" data-text="CONFIGURACIONES">CONFIGURACIONES</a></li>
+                <li><a href="/ALERTAS" data-text="ALERTAS">ALERTAS</a></li>
+                <li><a href="/ABOUTAPI" data-text="ACERCA DE LA API">ACERCA DE LA API</a></li>
+                <li><a href="/CONTACTO" data-text="CONTACTO">CONTACTO</a></li>
+            </ul>
+        </nav>
+
+        <section id="MAIN-BOX">
+            <section id="BOX1">
+                <h1>Modificar Parámetros Script Backup Calls</h1>
+                <form method="post" action="/CONFIG_CALL_BACKUP">  <!-- Cambiado a /CONFIG_CALL_BACKUP -->
+                    <label for="user2">Usuario</label>
+                    <select id="user2" name="user">
+                        <option value="+56999641574">David</option>
+                        <option value="+56911111111">Felipe</option>
+                        <!-- Agrega más opciones según sea necesario -->
+                    </select><br><br>
+        
+                    <label for="lang2">Idioma</label>
+                    <select id="lang2" name="lang">
+                        <option value="en-US-Standard-B">Ingles</option>
+                        <option value="es-ES-Standard-A">Español</option>
+                        <!-- Agrega más opciones según sea necesario -->
+                    </select><br><br>
+        
+                    <input type="submit" value="Guardar">
+                    <button onclick="window.location.href='/CONFIG'">Volver</button>
+                </form>
+            </section>
+        </section>
+
+    </main>
+
+</body>
+</html>

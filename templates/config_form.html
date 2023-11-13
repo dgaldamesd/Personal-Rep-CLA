@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Parámetros</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            // Intercepta el envío del formulario
+            $('form').submit(function(e){
+                e.preventDefault();  // Evita la recarga de la página
+
+                // Realiza la solicitud AJAX
+                $.ajax({
+                    type: 'POST',
+                    url: '/CONFIG',
+                    data: $(this).serialize(),
+                    success: function(response){
+                        alert(response); // Muestra una alerta con el mensaje de éxito (puedes cambiar esto según tus necesidades)
+                    }
+                });
+            });
+        });
+    </script>
+
+
+
+
+
+    <style>
+        #MAIN-BOX {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        #BOX1, #BOX2 {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 10px;
+            width: 40%;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    
+<section id="MAIN-BOX">
+    <section id="BOX1">
+        <h1>Modificar Parámetros (nombre_archivo)</h1>
+        <form method="post" action="/CONFIG">
+            <label for="user1">Usuario</label>
+            <select id="user1" name="user">
+                <option value="+56999641574">David</option>
+                <option value="+56911111111">Felipe</option>
+                <!-- Agrega más opciones según sea necesario -->
+            </select><br><br>
+
+            <label for="lang1">Idioma</label>
+            <select id="lang1" name="lang">
+                <option value="en-US-Standard-B">Ingles</option>
+                <option value="es-ES-Standard-A">Español</option>
+                <!-- Agrega más opciones según sea necesario -->
+            </select><br><br>
+
+            <input type="submit" value="Guardar">
+        </form>
+    </section>
+
+    <section id="BOX2">
+        <h1>Modificar Parámetros (archivo_backup)</h1>
+        <form method="post" action="/CONFIG">
+            <label for="user2">Usuario</label>
+            <select id="user2" name="user">
+                <option value="+56999641574">David</option>
+                <option value="+56911111111">Felipe</option>
+                <!-- Agrega más opciones según sea necesario -->
+            </select><br><br>
+
+            <label for="lang2">Idioma</label>
+            <select id="lang2" name="lang">
+                <option value="en-US-Standard-B">Ingles</option>
+                <option value="es-ES-Standard-A">Español</option>
+                <!-- Agrega más opciones según sea necesario -->
+            </select><br><br>
+
+            <input type="submit" value="Guardar">
+        </form>
+    </section>
+</section>
+
+</body>
+</html>
