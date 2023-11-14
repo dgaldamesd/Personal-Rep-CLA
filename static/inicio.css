@@ -9,7 +9,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: #000;
+    background: #081b29;
     overflow: hidden;
 }
 ul li {
@@ -40,13 +40,13 @@ ul li a:after {
     transition: 0.5s;
 }
 ul li a:hover:before {
-    color: #38184C;
+    color: #c800ff;
     z-index: 1;
     -webkit-text-stroke: 1px #000;
     transform: translate(10px,-10px);
 }
 ul li a:hover:after {
-    color: #c8ff00;
+    color: #0ef;
     z-index: 2;
     -webkit-text-stroke: 1px #000;
     transform: translate(20px,-20px);

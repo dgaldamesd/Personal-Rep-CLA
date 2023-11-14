@@ -20,7 +20,7 @@ body{
 
 .wrapper{
     position: relative;
-    width: 800px;
+    width: 1000px;
     height: 65vh;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -44,7 +44,7 @@ body{
     border-bottom: 2px solid #eee;
 }
 
-.unput {
+.input {
     border: none;
     outline: none;
     background: none;
@@ -95,7 +95,7 @@ body{
     align-items: flex-end;
 }
 
--wel_text {
+.wel_text {
     font-size: 40px;
     margin-top: -50px;
     line-height: 50px;
