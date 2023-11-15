@@ -25,9 +25,8 @@ def realizar_llamada(user, text, lang):
 
                 guardar_en_base_de_datos(user, text, result_text, datetime.strptime(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "%Y-%m-%d %H:%M:%S"))
 
-
-                if result_text == "Call Rejected by user":
-                    print("Llamada rechazada por el usuario.")
+                if result_text in ["Call Rejected by user", "Line is busy (call queued)"]:
+                    print(f"Llamada rechazada o línea ocupada: {result_text}")
                     rechazos += 1
                     if rechazos < 2:
                         print(f"Esperando 2 minutos para volver a llamar (Intento {rechazos + 1}/2)...")
@@ -39,7 +38,7 @@ def realizar_llamada(user, text, lang):
         else:
             return f"Hubo un error al iniciar la llamada. Código de estado: {response.status_code}"
 
-        # Si la llamada fue rechazada, se espera 2 minutos y se vuelve a llamar
+        # Si la llamada fue rechazada o la línea está ocupada, se espera 2 minutos y se vuelve a llamar
         time.sleep(1)  # Evitar hacer peticiones muy rápido, esperar un segundo antes de reintentar
 
     # Si hay dos rechazos, ejecutar el script de backup
@@ -50,7 +49,6 @@ def realizar_llamada(user, text, lang):
             subprocess.run(["python3", "backup.py"])
         except Exception as e:
             print(f"No se pudo ejecutar el script de backup: {e}")
-
 # ------------------------------------FUNCION QUE GUARDA LOS DATOS DE LA LLAMADA REALIZADA EN UNA BASE DE DATOS------------------------------------#
 def guardar_en_base_de_datos(user, text, result, timestamp):
     conn = sqlite3.connect('llamadas.db')
@@ -81,7 +79,7 @@ def guardar_en_base_de_datos(user, text, result, timestamp):
 
 if __name__ == "__main__":
     user = "+56999641574"  # Número de usuario
-    text = "Esta es una llamada de alerta de un servicio, por favor atender!"
+    text = "Alerta, servicio Bases de datos está en en estado Critico"
     lang = "en-US-Standard-B"  # Idioma
 
     resultado = realizar_llamada(user, text, lang)

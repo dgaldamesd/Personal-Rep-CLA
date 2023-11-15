@@ -40,13 +40,13 @@ ul li a:after {
     transition: 0.5s;
 }
 ul li a:hover:before {
-    color: #c800ff;
+    color: #03d81f;
     z-index: 1;
     -webkit-text-stroke: 1px #000;
     transform: translate(10px,-10px);
 }
 ul li a:hover:after {
-    color: #0ef;
+    color: #b3ff00;
     z-index: 2;
     -webkit-text-stroke: 1px #000;
     transform: translate(20px,-20px);

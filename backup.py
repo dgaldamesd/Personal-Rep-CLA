@@ -25,8 +25,8 @@ def realizar_llamada(user, text, lang):
 
                 guardar_en_base_de_datos(user, text, result_text, datetime.strptime(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "%Y-%m-%d %H:%M:%S"))
 
-                if result_text == "Call Rejected by user":
-                    print("Llamada rechazada por el usuario.")
+                if result_text in ["Call Rejected by user", "Line is busy (call queued)"]:
+                    print(f"Llamada de escalamiento rechazada o línea ocupada: {result_text}")
                     rechazos += 1
                     if rechazos < 2:
                         print(f"Esperando 2 minutos para volver a llamar (Intento {rechazos + 1}/2)...")
@@ -43,7 +43,7 @@ def realizar_llamada(user, text, lang):
 
     # Si hay dos rechazos, ejecutar el script de backup
     if rechazos == 2:
-        print("Dos intentos de llamada rechazados. Se volvera a iniciar el procedimiento desde el principio. . .")
+        print("Dos intentos de llamada de escalamiento rechazados. Se volverá a iniciar el procedimiento desde el principio. . .")
         try:
             time.sleep(120)
             subprocess.run(["python3", "otro_codigo.py"])
@@ -82,7 +82,7 @@ def guardar_en_base_de_datos(user, text, result, timestamp):
 
 if __name__ == "__main__":
     user = "+56999641574"  # Número de usuario
-    text = "Esta es una llamada de escalamiento de alerta. Por favor atender urgentemente!"
+    text = "Llamado de escalamiento, servicio Bases de datos está estado Critico!"
     lang = "en-US-Standard-B"  # Idioma
 
     resultado = realizar_llamada(user, text, lang)

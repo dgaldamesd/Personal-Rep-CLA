@@ -2,7 +2,7 @@
 
 /* Aplica estilos específicos al enlace con el ID "config-link" */
 #config-link {
-    color: #c800ff; /* Cambia el color del texto */
+    color: #03d81f; /* Cambia el color del texto */
     /* Agrega otros estilos según sea necesario */
 }
 
@@ -71,13 +71,13 @@ ul li a:after {
 }
 
 ul li a:hover:before {
-    color: #c800ff;
+    color: #03d81f;
     z-index: 1;
     -webkit-text-stroke: 1px #000;
     transform: translate(10px,-10px);
 }
 ul li a:hover:after {
-    color: #0ef;
+    color: #b3ff00;
     z-index: 2;
     -webkit-text-stroke: 1px #000;
     transform: translate(20px,-20px);
@@ -90,7 +90,7 @@ ul li a:hover:after {
     justify-content: center;
     height: 100vh;
     width: 75%;
-    background: linear-gradient(to right, #0ef, #c800ff);
+    background: linear-gradient(to right, #b3ff00, #03d81f);
 }
 
 button {
