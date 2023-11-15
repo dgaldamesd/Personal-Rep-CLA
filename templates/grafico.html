@@ -1,24 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Alertas</title>
+    <title>Modificar parámetros</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/grafico.css">
 </head>
 <body>
-    <h1>Gráfico de llamadas contestadas y no contestadas</h1>
-    
-    <!-- Mostrar el gráfico -->
-    <img src="data:image/png;base64,{{ grafico_base64 }}" alt="Gráfico de llamadas">
+    <main>
+        <nav>
+            <ul>
+                <li><a href="/" data-text="INICIO">INICIO</a></li>
+                <li><a href="/CONFIG" data-text="CONFIGURACIONES">CONFIGURACIONES</a></li>
+                <li><a href="/ALERTAS" data-text="ALERTAS">ALERTAS</a></li>
+                <li><a href="/ESTADISTICAS" id="config-link"  data-text="ESTADISTICAS">ESTADÍSTICAS</a></li>
+                <li><a href="/ABOUTAPI" data-text="ACERCA DE LA API">ACERCA DE LA API</a></li>
+                <li><a href="/CONTACTO" data-text="CONTACTO">CONTACTO</a></li>
+            </ul>
+        </nav>
 
-    <h2>Detalles de las llamadas:</h2>
-    <table>
-        <tr>
-            <th>Contestada</th>
-        </tr>
-        {% for llamada in llamadas %}
-        <tr>
-            <td>{{ llamada[0] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+        <section id="MAIN-BOX">
+            <div class="card">
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="tabla">Selecciona una tabla:</label>
+                        <select class="form-control" id="tabla" name="tabla">
+                            {% for tabla in tablas_disponibles %}
+                                <option {% if tabla == tabla_seleccionada %}selected{% endif %}>{{ tabla }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Actualizar Gráfico</button>
+                </form>
+                <div class="card-body">
+                    {{ grafico_html|safe }}
+                </div>
+            </div>
+        </section>
+    </main>
 </body>
 </html>

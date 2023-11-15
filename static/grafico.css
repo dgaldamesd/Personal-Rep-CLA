@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+#config-link {
+    color: #c800ff; /* Cambia el color del texto */
+    /* Agrega otros estilos según sea necesario */
+}
+
+#config-link:hover {
+    color: #fff; /* Cambia el color del texto en hover */
+    -webkit-text-stroke: 1px black;
+    transition: 0.5s;
+    /* Agrega otros estilos de hover según sea necesario */
+}
+
+
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+main {
+    display: flex;
+    background: #081b29
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #081b29;
+    overflow: hidden;
+    width: 25%;
+    margin: 0 10px;
+}
+
+ul li {
+    list-style: none;
+}
+
+ul li a {
+    position: relative;
+    display: block;
+    color: transparent;
+    -webkit-text-stroke: 1px #fff;
+    font-size: 1.8em;
+    font-weight: 900;
+    text-decoration: none;
+    line-height: 1.2em;
+    padding-bottom: 10px;
+}
+
+ul li a:hover {
+    color: #fff;
+    -webkit-text-stroke: 1px #000;
+    transition: 0.5s;
+}
+
+ul li a:before,
+ul li a:after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: 0.5s;
+}
+
+ul li a:hover:before {
+    color: #c800ff;
+    z-index: 1;
+    -webkit-text-stroke: 1px #000;
+    transform: translate(10px,-10px);
+}
+ul li a:hover:after {
+    color: #0ef;
+    z-index: 2;
+    -webkit-text-stroke: 1px #000;
+    transform: translate(20px,-20px);
+}
+
+#MAIN-BOX {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 75%;
+    background: linear-gradient(to right, #0ef, #c800ff);
+}
+
+.card {
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    height: 800px;
+    width: 900px;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+@media screen and (max-width: 768px) {
+    .card {
+        max-width: 100%; /* Cambia el ancho máximo a 100% en pantallas más pequeñas */
+    }
+}
+
+.card-body {
+    height: 300px;
+}
+
+form {
+    max-width: 400px;
+    height: 150px;
+    background-color: white;
+    border-radius: 8px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+
+
+

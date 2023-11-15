@@ -1,5 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+/* Aplica estilos específicos al enlace con el ID "config-link" */
+#config-link {
+    color: #c800ff; /* Cambia el color del texto */
+    /* Agrega otros estilos según sea necesario */
+}
+
+#config-link:hover {
+    color: #fff; /* Cambia el color del texto en hover */
+    -webkit-text-stroke: 1px black;
+    transition: 0.5s;
+    /* Agrega otros estilos de hover según sea necesario */
+}
+
+
+
+
+
 * {
     margin: 0;
     padding: 0;
@@ -8,7 +25,7 @@
 
 main {
     display: flex;
-    background: linear-gradient(to right, #0ef, #c800ff);
+    background: #081b29
 }
 
 nav {
@@ -18,7 +35,8 @@ nav {
     min-height: 100vh;
     background: #081b29;
     overflow: hidden;
-    width: 28%;
+    width: 25%;
+    margin: 0 10px;
 }
 
 ul li {
@@ -30,7 +48,7 @@ ul li a {
     display: block;
     color: transparent;
     -webkit-text-stroke: 1px #fff;
-    font-size: 2em;
+    font-size: 1.8em;
     font-weight: 900;
     text-decoration: none;
     line-height: 1.2em;
@@ -71,7 +89,8 @@ ul li a:hover:after {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    width: 85%;
+    width: 75%;
+    background: linear-gradient(to right, #0ef, #c800ff);
 }
 
 button {
