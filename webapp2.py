@@ -160,13 +160,23 @@ def realizar_llamada_texto():
         if 'text' in data:
             texto_recibido = data['text']
 
+            with open('backup.py', 'r') as archivo:
+                lineas = archivo.readlines()
+
+            with open('backup.py', 'w') as archivo:
+                for linea in lineas:
+                    if 'texto = ' in linea:
+                        archivo.write(f'    texto = "Alerta!, llamado de escalamiento. {texto_recibido}"  # Texto para la llamada\n')
+                    else:
+                        archivo.write(linea)
+
             with open('otro_codigo.py', 'r') as archivo:
                 lineas = archivo.readlines()
 
             with open('otro_codigo.py', 'w') as archivo:
                 for linea in lineas:
-                    if 'text = ' in linea:
-                        archivo.write(f'    text = "{texto_recibido}"  # Texto para la llamada\n')
+                    if 'texto = ' in linea:
+                        archivo.write(f'    texto = "{texto_recibido}"  # Texto para la llamada\n')
                     else:
                         archivo.write(linea)
 

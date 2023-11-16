@@ -8,17 +8,40 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         $(document).ready(function(){
+            // Función para obtener los valores actuales
+            function obtenerValoresActuales() {
+                $.ajax({
+                    url: '/obtener_parametros_actuales',  // Ruta definida en tu Flask para obtener los valores actuales
+                    type: 'GET',
+                    success: function(data) {
+                        // Actualizar los valores en los select
+                        $('#user').val(data.user);
+                        $('#lang').val(data.lang);
+                    },
+                    error: function(error) {
+                        console.log('Error al obtener los valores actuales:', error);
+                    }
+                });
+            }
+
+            // Llamar a la función al cargar la página para obtener los valores actuales
+            obtenerValoresActuales();
+
             // Intercepta el envío del formulario
             $('form').submit(function(e){
                 e.preventDefault();  // Evita la recarga de la página
 
-                // Realiza la solicitud AJAX
+                // Realiza la solicitud AJAX para actualizar los parámetros
                 $.ajax({
                     type: 'POST',
                     url: '/CONFIG_CALL',
                     data: $(this).serialize(),
                     success: function(response){
                         alert(response); // Muestra una alerta con el mensaje de éxito (puedes cambiar esto según tus necesidades)
+                        obtenerValoresActuales(); // Vuelve a obtener los valores después de la actualización
+                    },
+                    error: function(error) {
+                        console.log('Error al actualizar los parámetros:', error);
                     }
                 });
             });
@@ -43,22 +66,21 @@
             <section id="BOX1">
                 <h1>Modificar Parámetros Script Calls</h1>
                 <form method="post" action="/CONFIG_CALL">
-                    <label for="user1">Usuario</label>
-                    <select id="user1" name="user">
+                    <label for="user">Usuario</label>
+                    <select id="user" name="user">
                         <option value="+56999641574">David</option>
                         <option value="+56911111111">Felipe</option>
                         <!-- Agrega más opciones según sea necesario -->
                     </select><br><br>
-        
-                    <label for="lang1">Idioma</label>
-                    <select id="lang1" name="lang">
-                        <option value="en-US-Standard-B">Ingles</option>
+            
+                    <label for="lang">Idioma</label>
+                    <select id="lang" name="lang">
+                        <option value="en-US-Standard-B">Inglés</option>
                         <option value="es-ES-Standard-A">Español</option>
                         <!-- Agrega más opciones según sea necesario -->
                     </select><br><br>
-        
+            
                     <input type="submit" value="Guardar">
-                    <button onclick="window.location.href='/CONFIG'">Volver</button>
                 </form>
             </section>
         </section>

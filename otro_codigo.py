@@ -5,8 +5,8 @@ from datetime import datetime
 import time
 import subprocess
 
-def realizar_llamada(user, text, lang):
-    url = f"http://api.callmebot.com/start.php?source=web&user={user}&text={text}&lang={lang}"
+def realizar_llamada(user, texto, lang):
+    url = f"http://api.callmebot.com/start.php?source=web&user={user}&text={texto}&lang={lang}"
     rechazos = 0
     
     while rechazos < 2:  # Intentar máximo 2 veces
@@ -23,7 +23,7 @@ def realizar_llamada(user, text, lang):
                 result_text = response_content[start_index:end_index].strip()
                 result_text = re.sub(r"</?[^>]+>", "", result_text)
 
-                guardar_en_base_de_datos(user, text, result_text, datetime.strptime(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "%Y-%m-%d %H:%M:%S"))
+                guardar_en_base_de_datos(user, texto, result_text, datetime.strptime(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "%Y-%m-%d %H:%M:%S"))
 
                 if result_text in ["Call Rejected by user", "Line is busy (call queued)"]:
                     print(f"Llamada rechazada o línea ocupada: {result_text}")
@@ -79,8 +79,8 @@ def guardar_en_base_de_datos(user, text, result, timestamp):
 
 if __name__ == "__main__":
     user = "+56999641574"  # Número de usuario
-    text = "Alerta, servicio Bases de datos está en en estado Critico"
-    lang = "en-US-Standard-B"  # Idioma
+    texto = "En ;$HOSTNAME$; el Servicio ;$SERVICEDESC$; está en estado ;$SERVICESTATE$; mas info: ;$SERVICEOUTPUT$; - ;$DATE$; ;$TIME$;"  # Texto para la llamada
+    lang = "es-ES-Standard-A"  # Idioma
 
-    resultado = realizar_llamada(user, text, lang)
+    resultado = realizar_llamada(user, texto, lang)
     print(resultado)
