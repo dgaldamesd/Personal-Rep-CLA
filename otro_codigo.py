@@ -77,10 +77,15 @@ def guardar_en_base_de_datos(user, text, result, timestamp):
     conn.commit()
     conn.close()
 
+user = "+56911111111"  # Número de usuario
+texto = "En ;$HOSTNAME$; el Servicio ;$SERVICEDESC$; está en estado ;$SERVICESTATE$; mas info: ;$SERVICEOUTPUT$; - ;$DATE$; ;$TIME$;"  # Texto para la llamada
+lang = "en-US-Standard-B"
+
+
 if __name__ == "__main__":
-    user = "+56999641574"  # Número de usuario
-    texto = "En ;$HOSTNAME$; el Servicio ;$SERVICEDESC$; está en estado ;$SERVICESTATE$; mas info: ;$SERVICEOUTPUT$; - ;$DATE$; ;$TIME$;"  # Texto para la llamada
-    lang = "es-ES-Standard-A"  # Idioma
+    #user = "+56999641574"  # Número de usuario
+    #texto = "En ;$HOSTNAME$; el Servicio ;$SERVICEDESC$; está en estado ;$SERVICESTATE$; mas info: ;$SERVICEOUTPUT$; - ;$DATE$; ;$TIME$;"  # Texto para la llamada
+    #lang = "es-ES-Standard-A"  # Idioma
 
     resultado = realizar_llamada(user, texto, lang)
     print(resultado)

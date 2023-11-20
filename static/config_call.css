@@ -129,3 +129,10 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: #45a049;
 }
+
+
+#INFO-BOX {
+    height: 40%;
+    width: 40%;
+    background-color: #081b29;
+}

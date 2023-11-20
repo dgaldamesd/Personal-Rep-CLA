@@ -101,6 +101,8 @@ def CONFIG_MAIN():
     return render_template('config_main.html')
 
 # -----FUNCION QUE REEMPLAZA PARAMETROS DE USUARIO E IDIOMA EN SCRIPT-----#
+from otro_codigo import user, texto, lang 
+
 @app.route('/CONFIG_CALL', methods=['GET', 'POST'])
 def CONFIG_CALL():
     if request.method == 'POST':
@@ -108,17 +110,12 @@ def CONFIG_CALL():
         lang_call = request.form['lang']
         modificar_parametros(call_script, user_call, lang_call)
         return "Parámetros actualizados con éxito."
-    return render_template('config_call.html')
-
-# -----FUNCION QUE REEMPLAZA PARAMETROS DE USUARIO E IDIOMA EN SCRIPT DE BACKUP-----#
-@app.route('/CONFIG_CALL_BACKUP', methods=['GET', 'POST'])
-def CONFIG_CALL_BACKUP():
-    if request.method == 'POST':
-        user_call_backup = request.form['user']
-        lang_call_backup = request.form['lang']
-        modificar_parametros_backup(call_script_backup, user_call_backup, lang_call_backup)
-        return "Parámetros actualizados con éxito."
-    return render_template('config_call_backup.html')
+    datos = {
+        'user': user,
+        'texto': texto,
+        'lang': lang
+    }
+    return render_template('config_call.html', datos=datos)
 
 def modificar_parametros(script, user_cb, lang_cb):
     try:
@@ -137,6 +134,16 @@ def modificar_parametros(script, user_cb, lang_cb):
         return "Parámetros actualizados con éxito."
     except Exception as e:
         return f"Error al actualizar parámetros: {str(e)}"
+
+# -----FUNCION QUE REEMPLAZA PARAMETROS DE USUARIO E IDIOMA EN SCRIPT DE BACKUP-----#
+@app.route('/CONFIG_CALL_BACKUP', methods=['GET', 'POST'])
+def CONFIG_CALL_BACKUP():
+    if request.method == 'POST':
+        user_call_backup = request.form['user']
+        lang_call_backup = request.form['lang']
+        modificar_parametros_backup(call_script_backup, user_call_backup, lang_call_backup)
+        return "Parámetros actualizados con éxito."
+    return render_template('config_call_backup.html')
 
 # -----FUNCION QUE REEMPLAZA PARAMETROS DE USUARIO E IDIOMA EN SCRIPT DE BACKUP-----#
 def modificar_parametros_backup(script, user_c, lang_c):

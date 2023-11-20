@@ -6,47 +6,8 @@
     <title>Modificar Parámetros</title>
     <link rel="stylesheet" href="static/config_call.css">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            // Función para obtener los valores actuales
-            function obtenerValoresActuales() {
-                $.ajax({
-                    url: '/obtener_parametros_actuales',  // Ruta definida en tu Flask para obtener los valores actuales
-                    type: 'GET',
-                    success: function(data) {
-                        // Actualizar los valores en los select
-                        $('#user').val(data.user);
-                        $('#lang').val(data.lang);
-                    },
-                    error: function(error) {
-                        console.log('Error al obtener los valores actuales:', error);
-                    }
-                });
-            }
-
-            // Llamar a la función al cargar la página para obtener los valores actuales
-            obtenerValoresActuales();
-
-            // Intercepta el envío del formulario
-            $('form').submit(function(e){
-                e.preventDefault();  // Evita la recarga de la página
-
-                // Realiza la solicitud AJAX para actualizar los parámetros
-                $.ajax({
-                    type: 'POST',
-                    url: '/CONFIG_CALL',
-                    data: $(this).serialize(),
-                    success: function(response){
-                        alert(response); // Muestra una alerta con el mensaje de éxito (puedes cambiar esto según tus necesidades)
-                        obtenerValoresActuales(); // Vuelve a obtener los valores después de la actualización
-                    },
-                    error: function(error) {
-                        console.log('Error al actualizar los parámetros:', error);
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="config_call.js"></script>
+    <script src="datos_llamada.js"></script>
 </head>
 <body>
     <main>
@@ -82,10 +43,16 @@
             
                     <input type="submit" value="Guardar">
                 </form>
+                <div id="INFO-BOX">
+                    <h1>Datos de la Llamada</h1>
+                    <p>Usuario: <span id="user">{{ datos.user }}</span></p>
+                    <p>Idioma: <span id="lang">{{ datos.lang }}</span></p>
+                </div>
             </section>
         </section>
 
     </main>
-
+</body>
+</html>
     
     
