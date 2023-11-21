@@ -6,30 +6,14 @@
     <title>Modificar Parámetros</title>
     <link rel="stylesheet" href="static/config_call.css">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            // Intercepta el envío del formulario
-            $('form').submit(function(e){
-                e.preventDefault();  // Evita la recarga de la página
-
-                // Realiza la solicitud AJAX
-                $.ajax({
-                    type: 'POST',
-                    url: '/CONFIG_CALL_BACKUP',  // Cambiado a /CONFIG_CALL_BACKUP
-                    data: $(this).serialize(),
-                    success: function(response){
-                        alert(response); // Muestra una alerta con el mensaje de éxito (puedes cambiar esto según tus necesidades)
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="/static/datos_llamada.js"></script>
+    <script src="/static/config_call_b.js"></script>
 </head>
 <body>
     <main>
         <nav>
             <ul>
-                <li><a href="/" data-text="INICIO">INICIO</a></li>
+                <li><a href="/INICIO" data-text="INICIO">INICIO</a></li>
                 <li><a href="/CONFIG" id="config-link" data-text="CONFIGURACIONES">CONFIGURACIONES</a></li>
                 <li><a href="/ALERTAS" data-text="ALERTAS">ALERTAS</a></li>
                 <li><a href="/ESTADISTICAS" data-text="ESTADISTICAS">ESTADÍSTICAS</a></li>
@@ -39,18 +23,23 @@
         </nav>
 
         <section id="MAIN-BOX">
+            <div id="INFO-BOX">
+                <h1>Datos Actuales de la Llamada</h1>
+                <p>Usuario: <span id="user">{{ datos.user }}</span></p>
+                <p>Idioma: <span id="lang">{{ datos.lang }}</span></p>
+            </div>
             <section id="BOX1">
                 <h1>Modificar Parámetros Script Backup Calls</h1>
                 <form method="post" action="/CONFIG_CALL_BACKUP">  <!-- Cambiado a /CONFIG_CALL_BACKUP -->
-                    <label for="user2">Usuario</label>
-                    <select id="user2" name="user">
+                    <label for="user">Usuario</label>
+                    <select id="user" name="user">
                         <option value="+56999641574">David</option>
                         <option value="+56911111111">Felipe</option>
                         <!-- Agrega más opciones según sea necesario -->
                     </select><br><br>
         
-                    <label for="lang2">Idioma</label>
-                    <select id="lang2" name="lang">
+                    <label for="lang">Idioma</label>
+                    <select id="lang" name="lang">
                         <option value="en-US-Standard-B">Ingles</option>
                         <option value="es-ES-Standard-A">Español</option>
                         <!-- Agrega más opciones según sea necesario -->

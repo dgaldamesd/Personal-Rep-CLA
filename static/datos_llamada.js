@@ -1,21 +1,20 @@
-document.addEventListener("DOMContentLoaded", function() {
-    var userElement = document.getElementById("user");
-    var langElement = document.getElementById("lang");
-
-    // Verifica si los elementos se están seleccionando correctamente
-    console.log(userElement);
-    console.log(langElement);
-
-    // Intenta cambiar el texto de los elementos para verificar si se aplican los cambios
-    if (userElement) {
-        userElement.innerText = "David"; // Cambia el texto del usuario
-    } else {
-        console.log("Elemento de usuario no encontrado");
+window.onload = function() {
+    var langElement = document.getElementById('lang');
+    var userElement = document.getElementById('user');
+    
+    if (langElement.innerText.trim() === 'es-ES-Standard-A') {
+        langElement.innerText = 'Español';
     }
 
-    if (langElement) {
-        langElement.innerText = "Español"; // Cambia el texto del idioma
-    } else {
-        console.log("Elemento de idioma no encontrado");
+    if (userElement.innerText.trim() === '+56999641574') {
+        userElement.innerText = 'David';
     }
-});
+
+    if (langElement.innerText.trim() === 'en-US-Standard-B') {
+        langElement.innerText = 'Inglés';
+    }
+
+    if (userElement.innerText.trim() === '+56911111111') {
+        userElement.innerText = 'Felipe';
+    }
+};

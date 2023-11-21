@@ -5,6 +5,8 @@ import pandas as pd  # Agrega esta línea
 import plotly.express as px
 import plotly.io as pio
 import base64
+from otro_codigo import user, texto, lang
+from backup import user_b, texto_b, lang_b 
 
 app = Flask(__name__)
 
@@ -101,7 +103,7 @@ def CONFIG_MAIN():
     return render_template('config_main.html')
 
 # -----FUNCION QUE REEMPLAZA PARAMETROS DE USUARIO E IDIOMA EN SCRIPT-----#
-from otro_codigo import user, texto, lang 
+
 
 @app.route('/CONFIG_CALL', methods=['GET', 'POST'])
 def CONFIG_CALL():
@@ -125,9 +127,9 @@ def modificar_parametros(script, user_cb, lang_cb):
         with open(script, 'w') as file:
             for line in lines:
                 if 'user = ' in line:
-                    file.write(f'    user = "{user_cb}"  # Número de usuario\n')
+                    file.write(f'user = "{user_cb}"  # Número de usuario\n')
                 elif 'lang = ' in line:
-                    file.write(f'    lang = "{lang_cb}"  # Idioma\n')
+                    file.write(f'lang = "{lang_cb}"  # Idioma\n')
                 else:
                     file.write(line)
 
@@ -135,7 +137,7 @@ def modificar_parametros(script, user_cb, lang_cb):
     except Exception as e:
         return f"Error al actualizar parámetros: {str(e)}"
 
-# -----FUNCION QUE REEMPLAZA PARAMETROS DE USUARIO E IDIOMA EN SCRIPT DE BACKUP-----#
+# ----------------------FUNCION QUE REEMPLAZA PARAMETROS DE USUARIO E IDIOMA EN SCRIPT DE BACKUP----------------------------#
 @app.route('/CONFIG_CALL_BACKUP', methods=['GET', 'POST'])
 def CONFIG_CALL_BACKUP():
     if request.method == 'POST':
@@ -143,21 +145,32 @@ def CONFIG_CALL_BACKUP():
         lang_call_backup = request.form['lang']
         modificar_parametros_backup(call_script_backup, user_call_backup, lang_call_backup)
         return "Parámetros actualizados con éxito."
-    return render_template('config_call_backup.html')
+    datos_b = {
+        'user': user_b,
+        'texto': texto_b,
+        'lang': lang_b
+    }
+    return render_template('config_call_backup.html', datos=datos_b)
 
-# -----FUNCION QUE REEMPLAZA PARAMETROS DE USUARIO E IDIOMA EN SCRIPT DE BACKUP-----#
-def modificar_parametros_backup(script, user_c, lang_c):
-    with open(script, 'r') as file:
-        lines = file.readlines()
 
-    with open(script, 'w') as file:
-        for line in lines:
-            if 'user =' in line:  # Asegúrate de que estás buscando la línea correcta
-                file.write(f'    user = "{user_c}"  # Número de usuario\n')
-            elif 'lang =' in line:  # Asegúrate de que estás buscando la línea correcta
-                file.write(f'    lang = "{lang_c}"  # Idioma\n')
-            else:
-                file.write(line)
+def modificar_parametros_backup(call_script_backup, user_b, lang_b):
+    try:
+        with open(call_script_backup, 'r') as file:
+            lines = file.readlines()
+
+        with open(call_script_backup, 'w') as file:
+            for line in lines:
+                if 'user_b = ' in line:
+                    file.write(f'user_b = "{user_b}"  # Número de usuario\n')
+                elif 'lang_b = ' in line:
+                    file.write(f'lang_b = "{lang_b}"  # Idioma\n')
+                else:
+                    file.write(line)
+
+        return "Parámetros actualizados con éxito."
+    except Exception as e:
+        return f"Error al actualizar parámetros: {str(e)}"
+
 
 # ---------------------------------------FUNCION QUE RECIBE SOLICITUD PARA REALIZAR LLAMADA-----------------------------------------#
 @app.route('/realizar_llamada_texto', methods=['POST'])
@@ -172,8 +185,8 @@ def realizar_llamada_texto():
 
             with open('backup.py', 'w') as archivo:
                 for linea in lineas:
-                    if 'texto = ' in linea:
-                        archivo.write(f'    texto = "Alerta!, llamado de escalamiento. {texto_recibido}"  # Texto para la llamada\n')
+                    if 'texto_b = ' in linea:
+                        archivo.write(f'texto_b = "Alerta!, llamado de escalamiento. {texto_recibido}"  # Texto para la llamada\n')
                     else:
                         archivo.write(linea)
 
@@ -183,7 +196,7 @@ def realizar_llamada_texto():
             with open('otro_codigo.py', 'w') as archivo:
                 for linea in lineas:
                     if 'texto = ' in linea:
-                        archivo.write(f'    texto = "{texto_recibido}"  # Texto para la llamada\n')
+                        archivo.write(f'texto = "{texto_recibido}"  # Texto para la llamada\n')
                     else:
                         archivo.write(linea)
 

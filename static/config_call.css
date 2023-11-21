@@ -102,6 +102,16 @@ ul li a:hover:after {
     height: 50%;
 }
 
+#INFO-BOX {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 10px;
+    width: 50%;
+    background-color: white;
+    border-radius: 30px;
+    height: 20%;
+}
+
 h1 {
     text-align: center;
 }
@@ -130,9 +140,3 @@ input[type="submit"]:hover {
     background-color: #45a049;
 }
 
-
-#INFO-BOX {
-    height: 40%;
-    width: 40%;
-    background-color: #081b29;
-}

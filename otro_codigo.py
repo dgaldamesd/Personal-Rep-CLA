@@ -5,6 +5,12 @@ from datetime import datetime
 import time
 import subprocess
 
+
+user = "+56999641574"  # Número de usuario
+texto = "Llamada de prueba 1 am"  # Texto para la llamada
+lang = "es-ES-Standard-A"  # Idioma
+
+
 def realizar_llamada(user, texto, lang):
     url = f"http://api.callmebot.com/start.php?source=web&user={user}&text={texto}&lang={lang}"
     rechazos = 0
@@ -77,15 +83,9 @@ def guardar_en_base_de_datos(user, text, result, timestamp):
     conn.commit()
     conn.close()
 
-user = "+56911111111"  # Número de usuario
-texto = "En ;$HOSTNAME$; el Servicio ;$SERVICEDESC$; está en estado ;$SERVICESTATE$; mas info: ;$SERVICEOUTPUT$; - ;$DATE$; ;$TIME$;"  # Texto para la llamada
-lang = "en-US-Standard-B"
+
 
 
 if __name__ == "__main__":
-    #user = "+56999641574"  # Número de usuario
-    #texto = "En ;$HOSTNAME$; el Servicio ;$SERVICEDESC$; está en estado ;$SERVICESTATE$; mas info: ;$SERVICEOUTPUT$; - ;$DATE$; ;$TIME$;"  # Texto para la llamada
-    #lang = "es-ES-Standard-A"  # Idioma
-
     resultado = realizar_llamada(user, texto, lang)
     print(resultado)

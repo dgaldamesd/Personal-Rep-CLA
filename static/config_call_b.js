@@ -25,7 +25,7 @@ $(document).ready(function(){
         // Realiza la solicitud AJAX para actualizar los parámetros
         $.ajax({
             type: 'POST',
-            url: '/CONFIG_CALL',
+            url: '/CONFIG_CALL_BACKUP',
             data: $(this).serialize(),
             success: function(response){
                 alert(response); // Muestra una alerta con el mensaje de éxito (puedes cambiar esto según tus necesidades)
