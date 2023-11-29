@@ -7,6 +7,8 @@ import plotly.io as pio
 import base64
 from otro_codigo import user, texto, lang
 from backup import user_b, texto_b, lang_b 
+from datetime import datetime, time
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
@@ -173,43 +175,85 @@ def modificar_parametros_backup(call_script_backup, user_b, lang_b):
 
 
 # ---------------------------------------FUNCION QUE RECIBE SOLICITUD PARA REALIZAR LLAMADA-----------------------------------------#
+def guardar_en_base_de_datos(texto_recibido):
+    try:
+        conn = sqlite3.connect('alertas.db')
+        cursor = conn.cursor()
+
+        # Crear la tabla si no existe
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS alertas_nov (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            texto TEXT,
+            fecha DATE,
+            hora TIME
+            )
+        ''')
+
+        # Insertar los datos en la tabla
+        cursor.execute('''
+            INSERT INTO alertas_nov (texto, fecha, hora)
+            VALUES (?, DATE('now'), TIME('now'))
+        ''', (texto_recibido,))
+        conn.commit()
+        conn.close()
+        print('Datos almacenados correctamente en la base de datos.')
+        return 'Datos almacenados correctamente en la base de datos.'
+    except sqlite3.Error as e:
+        print(f'Error al insertar datos en la base de datos: {str(e)}')
+        return f'Error al insertar datos en la base de datos: {str(e)}'
+
+
+
+
 @app.route('/realizar_llamada_texto', methods=['POST'])
 def realizar_llamada_texto():
-    if request.method == 'POST':
-        data = request.get_json()
-        if 'text' in data:
-            texto_recibido = data['text']
+    if request.method == 'POST':  # Verifica si es una solicitud POST
+        data = request.get_json()  # Obtiene los datos JSON de la solicitud
+        if 'text' in data:  # Verifica si el campo 'text' está presente en los datos
+            texto_recibido = data['text']  # Obtiene el texto de la solicitud
 
-            with open('backup.py', 'r') as archivo:
-                lineas = archivo.readlines()
+            hora_actual = datetime.now().time()  # Obtiene la hora actual
+            hora_inicio_habil = time(12, 0)  # Establece el horario hábil (10:00)
+            hora_fin_habil = time(14, 30)  # Establece el horario hábil (14:30)
 
-            with open('backup.py', 'w') as archivo:
-                for linea in lineas:
-                    if 'texto_b = ' in linea:
-                        archivo.write(f'texto_b = "Alerta!, llamado de escalamiento. {texto_recibido}"  # Texto para la llamada\n')
-                    else:
-                        archivo.write(linea)
-
-            with open('otro_codigo.py', 'r') as archivo:
-                lineas = archivo.readlines()
-
-            with open('otro_codigo.py', 'w') as archivo:
-                for linea in lineas:
-                    if 'texto = ' in linea:
-                        archivo.write(f'texto = "{texto_recibido}"  # Texto para la llamada\n')
-                    else:
-                        archivo.write(linea)
-
-            proceso = subprocess.Popen(['python3', 'otro_codigo.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            salida, error = proceso.communicate()
-
-            if error:
-                return f'Error al ejecutar otro_codigo.py: {error.decode()}'
+            if hora_inicio_habil <= hora_actual <= hora_fin_habil:  # Verifica si estamos en horario hábil
+                return 'Ignorando solicitud POST debido a horario hábil.'  # Si es así, ignora la solicitud
+            
             else:
-                return f'Texto recibido y actualizado en otro_codigo.py. Ejecución exitosa.'
+                try:
+                    guardar_en_base_de_datos(texto_recibido)
+                except Exception as e:
+                    return f'Error al guardar en la base de datos: {str(e)}'
 
+                with open('backup.py', 'r') as archivo:
+                    lineas = archivo.readlines()
+
+                with open('backup.py', 'w') as archivo:
+                    for linea in lineas:
+                        if 'texto_b = ' in linea:
+                            archivo.write(f'texto_b = "Alerta!, llamado de escalamiento. {texto_recibido}"  # Texto para la llamada\n')
+                        else:
+                            archivo.write(linea)
+
+                with open('otro_codigo.py', 'r') as archivo:
+                    lineas = archivo.readlines()
+
+                with open('otro_codigo.py', 'w') as archivo:
+                    for linea in lineas:
+                        if 'texto = ' in linea:
+                            archivo.write(f'texto = "{texto_recibido}"  # Texto para la llamada\n')
+                        else:
+                            archivo.write(linea)
+
+                proceso = subprocess.Popen(['python3', 'otro_codigo.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                salida, error = proceso.communicate()
+
+                if error:
+                    return f'Error al ejecutar otro_codigo.py: {error.decode()}'
+                else:
+                    return f'Texto recibido y actualizado en otro_codigo.py. Ejecución exitosa.'
     return 'Error: no se proporcionó el campo "text" en la solicitud.'
 
 if __name__ == '__main__':
-    with app.app_context():
-        app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)

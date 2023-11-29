@@ -7,7 +7,7 @@ import subprocess
 
 
 user = "+56999641574"  # Número de usuario
-texto = "Llamada de prueba desde otro Servidor"  # Texto para la llamada
+texto = "Llamada de prueba de análisis de horario a las 11:41 "  # Texto para la llamada
 lang = "es-ES-Standard-A"  # Idioma
 
 
