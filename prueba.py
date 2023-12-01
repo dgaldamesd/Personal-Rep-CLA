@@ -64,7 +64,6 @@ def realizar_llamada_texto():
                     guardar_en_base_de_datos(texto_recibido)  # Llama a la función para guardar en la base de datos
                 except Exception as e:
                     return f'Error al guardar en la base de datos: {str(e)}'  # Captura y muestra errores al guardar
-
                 time.sleep(120)
                
 
