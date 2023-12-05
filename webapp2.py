@@ -300,6 +300,43 @@ else:
 
 
 
+
+def modificacion_archivos(texto_recibido):
+    with open('otro_codigo.py', 'r') as archivo:
+        lineas = archivo.readlines()
+
+    with open('otro_codigo.py', 'w') as archivo:
+        for linea in lineas:
+            if 'texto = ' in linea:
+                archivo.write(f'texto = "{texto_recibido}"  # Texto para la llamada\n')
+            else:
+                archivo.write(linea)
+    
+    with open('backup.py', 'r') as archivo:
+        lineas = archivo.readlines()
+
+    with open('backup.py', 'w') as archivo:
+        for linea in lineas:
+            if 'texto_b = ' in linea:
+                archivo.write(f'texto_b = "Alerta!, llamado de escalamiento. {texto_recibido}"  # Texto para la llamada\n')
+            else:
+                archivo.write(linea)
+
+    print("Realizando llamada. . .")
+    proceso = subprocess.Popen(['python3', 'otro_codigo.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    salida, error = proceso.communicate()
+
+
+
+
+
+
+
+
+
+
+
+
 #------------------------------------ENDPOINT QUE RECIBE POST------------------------------------#
 
 @app.route('/realizar_llamada_texto', methods=['POST'])
@@ -338,11 +375,10 @@ def realizar_llamada_texto():
                             alerta_encontrada = True
                             break
                     if alerta_encontrada:
-                        print("¡Éxito! Se encontró una alerta con el texto proporcionado.")
                         return 'Proceso terminado por encontrar una alerta.'  # Esto detendrá la función aquí
                     else:
                         conn.close()
-                        print("Error: No se encontraron coincidencias en la base de datos.")
+                        print("No se encontraron coincidencias en la base de datos.")
                         print("Procediendo con la llamada. . .")
                         with open('backup.py', 'r') as archivo:
                             lineas = archivo.readlines()
