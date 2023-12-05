@@ -67,7 +67,7 @@ def mostrar_grafico():
     return render_template('grafico.html', tabla_seleccionada=tabla_seleccionada, grafico_html=grafico_html, tablas_disponibles=tablas_disponibles)
 
 
-# ---------------------------------------PAGINA ALERTAS-----------------------------------------#
+# ---------------------------------------ENDPOINT ALERTAS-----------------------------------------#
 @app.route('/ALERTAS', methods=['GET', 'POST'])
 def mostrar_llamadas():
     tablas = get_lista_tablas()
@@ -140,8 +140,12 @@ def modificar_parametros(script, user_cb, lang_cb):
     except Exception as e:
         return f"Error al actualizar parámetros: {str(e)}"
 
-# ----------------------FUNCION QUE REEMPLAZA PARAMETROS DE USUARIO E IDIOMA EN SCRIPT DE BACKUP----------------------------#
+# --------------------------------FENDPOINT DE COFIGURACIÓN----------------------------------#
 @app.route('/CONFIG_CALL_BACKUP', methods=['GET', 'POST'])
+
+
+
+#-------FUNCION QUE PERMITE REEMPLAZAR LOS PARAMETROS DEL SCRIPT DE LLAMADA PRINCIPAL-------#
 def CONFIG_CALL_BACKUP():
     if request.method == 'POST':
         user_call_backup = request.form['user']
@@ -156,6 +160,9 @@ def CONFIG_CALL_BACKUP():
     return render_template('config_call_backup.html', datos=datos_b)
 
 
+
+
+#-------FUNCION QUE PERMITE REEMPLAZAR LOS PARAMETROS DEL SCRIPT DE LLAMADA BACKUP-------#
 def modificar_parametros_backup(call_script_backup, user_b, lang_b):
     try:
         with open(call_script_backup, 'r') as file:
@@ -175,7 +182,7 @@ def modificar_parametros_backup(call_script_backup, user_b, lang_b):
         return f"Error al actualizar parámetros: {str(e)}"
 
 
-# ---------------------------------------FUNCION QUE RECIBE SOLICITUD PARA REALIZAR LLAMADA-----------------------------------------#
+# -------------FUNCION ENCARGADA DE ALMACENAR LAS ALERTAS CRITICAS--------------#
 def Guardar_en_DB_critical(texto):
     try:
         timestamp = datetime.now()
@@ -210,14 +217,7 @@ def Guardar_en_DB_critical(texto):
     print(f'Guardando en la base de datos (Critical): {texto}')
 
 
-#--------------------------------------#
-
-
-
-
-
-
-
+#------------FUNCION ENCARGADA DE ALMACENAR LAS ALERTAS NORMALIZADAS------------------#
 
 def Guardar_en_DB_Established(texto):
     try:
@@ -250,9 +250,12 @@ def Guardar_en_DB_Established(texto):
         print(f'Error al insertar datos en la base de datos: {str(e)}')
 
     print(f'Guardando en la base de datos (Established): {texto}')
-#------------------------------------ENDPOINT QUE RECIBE POST------------------------------------#
 
+
+
+#------------------------------------ENDPOINT QUE RECIBE POST------------------------------------#
 @app.route('/realizar_llamada_texto', methods=['POST'])
+#------------------------------------------------------------------------------------------------#
 def realizar_llamada_texto():
     if request.method == 'POST':
         data = request.get_json()
@@ -329,12 +332,7 @@ def realizar_llamada_texto():
                         if error:
                             return f'Error al ejecutar otro_codigo.py: {error.decode()}'
                         else:
-                            return f'Texto recibido y actualizado en otro_codigo.py. Ejecución exitosa.'
-                        
-
-
-                    
-                
+                            return f'Texto recibido y actualizado en otro_codigo.py. Ejecución exitosa.'               
                 else:
                     Guardar_en_DB_Established(texto_recibido)
 
@@ -344,7 +342,7 @@ def realizar_llamada_texto():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
-    
+#------------------------------------------------------------------------------------------------# 
 
 
 
