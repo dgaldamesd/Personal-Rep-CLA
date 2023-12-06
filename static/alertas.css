@@ -1,27 +1,62 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-#config-link {
-    color: #03d81f; /* Cambia el color del texto */
-    /* Agrega otros estilos según sea necesario */
-}
-
-#config-link:hover {
-    color: #fff; /* Cambia el color del texto en hover */
-    -webkit-text-stroke: 1px black;
-    transition: 0.5s;
-    /* Agrega otros estilos de hover según sea necesario */
-}
-
-
+/* Estilos generales */
 * {
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
 }
 
+/* Estilos para dispositivos pequeños (ejemplo: móviles) */
+@media screen and (max-width: 768px) {
+    main {
+        flex-direction: column;
+        width: 100%; /* Ocupar todo el ancho disponible */
+    }
+    nav {
+        width: 100%;
+        min-height: auto;
+        margin: 10px 0;
+    }
+    ul li a {
+        font-size: 1.5em;
+    }
+    #MAIN-BOX {
+        width: 100%;
+    }
+    #BOX1 {
+        width: 90%;
+        max-width: none;
+        height: auto;
+        padding: 10px;
+    }
+    /* Otros ajustes necesarios para dispositivos pequeños */
+}
+
+/* Estilos para dispositivos grandes (ejemplo: computadoras de escritorio) */
+@media screen and (min-width: 769px) {
+    main {
+        flex-direction: row;
+    }
+    nav {
+        width: 25%;
+    }
+    #MAIN-BOX {
+        width: 75%;
+    }
+    #BOX1 {
+        width: 100%; /* Ocupar todo el ancho disponible */
+        max-width: 100%; /* No establecer un ancho máximo */
+        height: auto;
+        padding: 20px;
+    }
+    /* Otros ajustes necesarios para dispositivos grandes */
+}
+
+/* Estilos originales (pantallas más grandes) */
 main {
     display: flex;
-    background: #081b29
+    background: #081b29;
 }
 
 nav {
@@ -34,9 +69,11 @@ nav {
     width: 25%;
     margin: 0 10px;
 }
+
 ul li {
     list-style: none;
 }
+
 ul li a {
     position: relative;
     display: block;
@@ -48,11 +85,13 @@ ul li a {
     line-height: 1.2em;
     padding-bottom: 10px;
 }
+
 ul li a:hover {
     color: #fff;
     -webkit-text-stroke: 1px #000;
     transition: 0.5s;
 }
+
 ul li a:before,
 ul li a:after {
     content: attr(data-text);
@@ -61,17 +100,19 @@ ul li a:after {
     left: 0;
     transition: 0.5s;
 }
+
 ul li a:hover:before {
     color: #03d81f;
     z-index: 1;
     -webkit-text-stroke: 1px #000;
-    transform: translate(10px,-10px);
+    transform: translate(10px, -10px);
 }
+
 ul li a:hover:after {
     color: #b3ff00;
     z-index: 2;
     -webkit-text-stroke: 1px #000;
-    transform: translate(20px,-20px);
+    transform: translate(20px, -20px);
 }
 
 #MAIN-BOX {
@@ -90,7 +131,7 @@ ul li a:hover:after {
     border-radius: 8px;
     padding: 20px;
     margin: 0 auto;
-    height: 800px;
+    height: 500px;
     width: 900px;
     max-width: 1000px;
 }
@@ -109,7 +150,6 @@ table {
     text-align: left;
     overflow: hidden;
     box-shadow: 0 0 20px #0000001a;
-
 }
   
 th, td {
@@ -151,7 +191,7 @@ tr:nth-child(even) {
 
 
 .table-container {
-    max-height: 750px; /* Ajusta la altura máxima según sea necesario */
+    max-height: 450px; /* Ajusta la altura máxima según sea necesario */
     overflow-y: auto; /* Agrega una barra de desplazamiento vertical cuando es necesario */
 }
 

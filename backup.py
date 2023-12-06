@@ -6,7 +6,7 @@ import time
 import subprocess
 
 user_b = "+56999641574"  # Número de usuario
-texto_b = "Alerta!, llamado de escalamiento. Alerta!, el servicio Ping en la sucursal de: Tinguiririca, se encentra en estado: Critical. "  # Texto para la llamada
+texto_b = "Alerta, llamado de escalamiento. Alerta!, el servicio Ping en la sucursal de: La Sona, se encuentra en estado: Critical. "  # Texto para la llamada
 lang_b = "en-US-Standard-B"  # Idioma
 
 def realizar_llamada(user_b, texto_b, lang_b):

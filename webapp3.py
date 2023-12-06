@@ -294,46 +294,43 @@ def verificar_alertas_y_continuar():
 
 
 
+from sqlalchemy import create_engine, MetaData, Table, select
+from datetime import datetime
 
+def obtener_palabra_clave(texto_recibido):
+    # Lógica para obtener la palabra clave después de "de:" y antes de la coma
+    inicio = texto_recibido.find("de:") + len("de:")
+    fin = texto_recibido.find(",", inicio)
+    palabra_clave = texto_recibido[inicio:fin].strip()
+    return palabra_clave
 
-
-
-
-
-from datetime import datetime, timedelta
-
-def procesar_alertas(texto_recibido):
+def procesar_alertas(palabra_clave):
     # Conexión a la base de datos
-    conn = sqlite3.connect('alertas_critical.db')
-    cursor = conn.cursor()
+    engine = create_engine('sqlite:///alertas_critical.db')
 
-    # Obtener el mes actual para acceder a la tabla correspondiente
-    month = datetime.now().strftime('%B').lower()
-    table_name = f'alertas_critical_{month}'
+    # Obtener el mes actual para seleccionar la tabla correspondiente
+    month = datetime.now().strftime("%m")
 
-    # Obtener la fecha y hora de hace 30 minutos
-    thirty_minutes_ago = datetime.now() - timedelta(minutes=30)
+    # Tabla específica a la que se accederá
+    meta = MetaData()
+    alertas_table = Table(f'alertas_critical_{month}', meta, autoload=True, autoload_with=engine)
 
-    # Consulta para obtener las últimas alertas en los últimos 30 minutos
-    query = f"SELECT origen FROM {table_name} WHERE fecha >= ? AND hora >= ?"
-    cursor.execute(query, (thirty_minutes_ago.strftime("%Y-%m-%d"), thirty_minutes_ago.strftime("%H:%M:%S")))
-    resultados = cursor.fetchall()
+    # Crear una sesión para interactuar con la base de datos
+    with engine.connect() as conn:
+        # Consultar si la palabra clave coincide con algún registro en la base de datos
+        query = select([alertas_table]).where(alertas_table.c.origen == palabra_clave)
+        result = conn.execute(query)
 
-    # Cerrar la conexión
-    conn.close()
+        # Verificar si se encontró alguna coincidencia
+        coincidencias = result.fetchall()
 
-    # Verificar si hay más de una alerta con el mismo origen
-    origenes = [resultado[0] for resultado in resultados]
-    origen_repetido = len(origenes) > 1 and len(set(origenes)) == 1
+        # Ejecutar la función correspondiente según la existencia de coincidencias
+        if coincidencias:
+            modificacion_archivos_1(texto)
+        else:
+            modificacion_archivos_2(texto)
 
-    # Ejecutar la función correspondiente según el resultado
-    if origen_repetido:
-        modificacion_archivos_1(texto_recibido)
-        return "Se ejecutó modificacion_archivos_1"
-    else:
-        modificacion_archivos_2(texto_recibido)
-        return "Se ejecutó modificacion_archivos_2"
-
+    return palabra_clave
 
 
 
@@ -362,7 +359,7 @@ def modificacion_archivos_1(texto_recibido):
             else:
                 archivo.write(linea)
 
-    print("Realizando llamada. . .")
+    print("Realizando llamada por problema en sucursal. . .")
     proceso = subprocess.Popen(['python3', 'otro_codigo.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     salida, error = proceso.communicate()
     
@@ -370,6 +367,8 @@ def modificacion_archivos_1(texto_recibido):
         return f'Error al ejecutar otro_codigo.py: {error.decode()}'
     else:
         return f'Texto recibido y actualizado en otro_codigo.py. Ejecución exitosa.'  
+
+
 
 def modificacion_archivos_2(texto_recibido):
     with open('otro_codigo.py', 'r') as archivo:
@@ -449,7 +448,8 @@ def realizar_llamada_texto():
                         conn.close()
                         print(f"La tabla alertas_established_{month} no existe.")
                         print("Procediendo con la llamada...")
-                        procesar_alertas(texto_recibido)
+                        palabra_clave = obtener_palabra_clave(texto_recibido)
+                        procesar_alertas(palabra_clave)
                     else:
                         # La tabla existe, realiza la consulta normal de búsqueda de alertas
                         cursor.execute(f"SELECT texto FROM alertas_established_{month}")
@@ -467,7 +467,8 @@ def realizar_llamada_texto():
                             conn.close()
                             print("No se encontraron coincidencias en la base de datos.")
                             print("Procediendo con la llamada...")
-                            procesar_alertas(texto_recibido)
+                            palabra_clave = obtener_palabra_clave(texto_recibido)
+                            procesar_alertas(palabra_clave)
                 else:
                     Guardar_en_DB_Established(texto_recibido)
 

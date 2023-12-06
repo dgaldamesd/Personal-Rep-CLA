@@ -67,7 +67,7 @@ def mostrar_grafico():
     return render_template('grafico.html', tabla_seleccionada=tabla_seleccionada, grafico_html=grafico_html, tablas_disponibles=tablas_disponibles)
 
 
-# ---------------------------------------ENDPOINT ALERTAS-----------------------------------------#
+# ---------------------------------------PAGINA ALERTAS-----------------------------------------#
 @app.route('/ALERTAS', methods=['GET', 'POST'])
 def mostrar_llamadas():
     tablas = get_lista_tablas()
@@ -140,12 +140,8 @@ def modificar_parametros(script, user_cb, lang_cb):
     except Exception as e:
         return f"Error al actualizar parámetros: {str(e)}"
 
-# --------------------------------FENDPOINT DE COFIGURACIÓN----------------------------------#
+# ----------------------FUNCION QUE REEMPLAZA PARAMETROS DE USUARIO E IDIOMA EN SCRIPT DE BACKUP----------------------------#
 @app.route('/CONFIG_CALL_BACKUP', methods=['GET', 'POST'])
-
-
-
-#-------FUNCION QUE PERMITE REEMPLAZAR LOS PARAMETROS DEL SCRIPT DE LLAMADA PRINCIPAL-------#
 def CONFIG_CALL_BACKUP():
     if request.method == 'POST':
         user_call_backup = request.form['user']
@@ -160,9 +156,6 @@ def CONFIG_CALL_BACKUP():
     return render_template('config_call_backup.html', datos=datos_b)
 
 
-
-
-#-------FUNCION QUE PERMITE REEMPLAZAR LOS PARAMETROS DEL SCRIPT DE LLAMADA BACKUP-------#
 def modificar_parametros_backup(call_script_backup, user_b, lang_b):
     try:
         with open(call_script_backup, 'r') as file:
@@ -182,13 +175,9 @@ def modificar_parametros_backup(call_script_backup, user_b, lang_b):
         return f"Error al actualizar parámetros: {str(e)}"
 
 
-<<<<<<< HEAD
-# -------------FUNCION ENCARGADA DE ALMACENAR LAS ALERTAS CRITICAS--------------#
-=======
 # ---------------------------------------FUNCION QUE RECIBE SOLICITUD PARA REALIZAR LLAMADA-----------------------------------------#
 import re
 
->>>>>>> 05670caa41393ef4f46cc8a44706c9961f31317b
 def Guardar_en_DB_critical(texto):
     try:
         timestamp = datetime.now()
@@ -228,11 +217,7 @@ def Guardar_en_DB_critical(texto):
     print(f'Guardando en la base de datos (Critical): {texto}')
 
 
-<<<<<<< HEAD
-#------------FUNCION ENCARGADA DE ALMACENAR LAS ALERTAS NORMALIZADAS------------------#
-=======
 
->>>>>>> 05670caa41393ef4f46cc8a44706c9961f31317b
 
 #--------------------------------------#
 def Guardar_en_DB_Established(texto):
@@ -261,8 +246,6 @@ def Guardar_en_DB_Established(texto):
         print(f'Error al insertar datos en la base de datos: {str(e)}')
 
     print(f'Guardando en la base de datos (Established): {texto}')
-<<<<<<< HEAD
-=======
 
 
 
@@ -272,7 +255,7 @@ def Guardar_en_DB_Established(texto):
 import sqlite3
 from datetime import datetime
 
-def verificar_alertas():
+def verificar_alertas_y_continuar():
     try:
         timestamp = datetime.now()
         month = timestamp.strftime('%B').lower()
@@ -301,24 +284,94 @@ def verificar_alertas():
                 return False
         
         conn.close()
-        return True  # Continuar con la siguiente función si no hay múltiples alertas con el mismo origen
+        print("No hay múltiples alertas con el mismo origen en el mes actual. Continuando con la siguiente acción.")
+        # Llamar aquí a la siguiente acción que quieras realizar después de la verificación
+        return True  # Opcional: puedes devolver True si no hay alertas para manejar esto en el endpoint
 
     except sqlite3.Error as e:
         print(f'Error al realizar la verificación: {str(e)}')
         return False
 
-# Llamar a la función para verificar antes de continuar con la siguiente acción
-if verificar_alertas():
-    # Continuar con la siguiente acción
-    print("No hay múltiples alertas con el mismo origen en el mes actual. Continuando con la siguiente acción.")
-else:
-    # Detener la siguiente acción debido a múltiples alertas con el mismo origen
-    print("Deteniendo la siguiente acción debido a múltiples alertas con el mismo origen en el mes actual.")
 
 
 
 
-def modificacion_archivos(texto_recibido):
+
+
+
+
+from datetime import datetime, timedelta
+
+def procesar_alertas(texto_recibido):
+    # Conexión a la base de datos
+    conn = sqlite3.connect('alertas_critical.db')
+    cursor = conn.cursor()
+
+    # Obtener el mes actual para acceder a la tabla correspondiente
+    month = datetime.now().strftime('%B').lower()
+    table_name = f'alertas_critical_{month}'
+
+    # Obtener la fecha y hora de hace 30 minutos
+    thirty_minutes_ago = datetime.now() - timedelta(minutes=30)
+
+    # Consulta para obtener las últimas alertas en los últimos 30 minutos
+    query = f"SELECT origen FROM {table_name} WHERE fecha >= ? AND hora >= ?"
+    cursor.execute(query, (thirty_minutes_ago.strftime("%Y-%m-%d"), thirty_minutes_ago.strftime("%H:%M:%S")))
+    resultados = cursor.fetchall()
+
+    # Cerrar la conexión
+    conn.close()
+
+    # Verificar si hay más de una alerta con el mismo origen
+    origenes = [resultado[0] for resultado in resultados]
+    origen_repetido = len(origenes) > 1 and len(set(origenes)) == 1
+
+    # Ejecutar la función correspondiente según el resultado
+    if origen_repetido:
+        modificacion_archivos_1(texto_recibido)
+        return "Se ejecutó modificacion_archivos_1"
+    else:
+        modificacion_archivos_2(texto_recibido)
+        return "Se ejecutó modificacion_archivos_2"
+
+
+
+
+
+
+
+# Funciones modificacion_archivos_1 y modificacion_archivos_2 a definir por ti
+def modificacion_archivos_1(texto_recibido):
+    with open('otro_codigo.py', 'r') as archivo:
+        lineas = archivo.readlines()
+
+    with open('otro_codigo.py', 'w') as archivo:
+        for linea in lineas:
+            if 'texto = ' in linea:
+                archivo.write(f'texto = "Alerta en sucursal. {texto_recibido}"  # Texto para la llamada\n')
+            else:
+                archivo.write(linea)
+    
+    with open('backup.py', 'r') as archivo:
+        lineas = archivo.readlines()
+
+    with open('backup.py', 'w') as archivo:
+        for linea in lineas:
+            if 'texto_b = ' in linea:
+                archivo.write(f'texto_b = "Alerta en sucursal!, llamado de escalamiento. {texto_recibido}"  # Texto para la llamada\n')
+            else:
+                archivo.write(linea)
+
+    print("Realizando llamada. . .")
+    proceso = subprocess.Popen(['python3', 'otro_codigo.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    salida, error = proceso.communicate()
+    
+    if error:
+        return f'Error al ejecutar otro_codigo.py: {error.decode()}'
+    else:
+        return f'Texto recibido y actualizado en otro_codigo.py. Ejecución exitosa.'  
+
+def modificacion_archivos_2(texto_recibido):
     with open('otro_codigo.py', 'r') as archivo:
         lineas = archivo.readlines()
 
@@ -342,11 +395,11 @@ def modificacion_archivos(texto_recibido):
     print("Realizando llamada. . .")
     proceso = subprocess.Popen(['python3', 'otro_codigo.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     salida, error = proceso.communicate()
-
-
-
-
-
+    
+    if error:
+        return f'Error al ejecutar otro_codigo.py: {error.decode()}'
+    else:
+        return f'Texto recibido y actualizado en otro_codigo.py. Ejecución exitosa.'  
 
 
 
@@ -355,13 +408,8 @@ def modificacion_archivos(texto_recibido):
 
 
 #------------------------------------ENDPOINT QUE RECIBE POST------------------------------------#
->>>>>>> 05670caa41393ef4f46cc8a44706c9961f31317b
 
-
-
-#------------------------------------ENDPOINT QUE RECIBE POST------------------------------------#
 @app.route('/realizar_llamada_texto', methods=['POST'])
-#------------------------------------------------------------------------------------------------#
 def realizar_llamada_texto():
     if request.method == 'POST':
         data = request.get_json()
@@ -371,7 +419,7 @@ def realizar_llamada_texto():
 
             hora_actual = datetime.now().time()
             hora_inicio_habil = datetime_time(8, 0)
-            hora_fin_habil = datetime_time(10, 30)
+            hora_fin_habil = datetime_time(9, 0)
 
             if hora_inicio_habil <= hora_actual <= hora_fin_habil:
                 return 'Ignorando solicitud POST debido a horario hábil.'
@@ -379,61 +427,47 @@ def realizar_llamada_texto():
             else:
                 if "Critical" in texto_recibido:
                     Guardar_en_DB_critical(texto_recibido)
-                    if not verificar_alertas():
+                    
+                    if not verificar_alertas_y_continuar():
                         return 'Deteniendo la siguiente acción debido a múltiples alertas con el mismo origen en el mes actual.'
+                    
                     month = datetime.now().strftime('%B').lower()
                     db_name = f'alertas_established.db'
-                    texto_alerta = texto_recibido.split(' está')[0]
+                    texto_alerta = texto_recibido.split(' estado:')[0]
                     print(f"Texto recibido guardado como texto_alerta: {texto_alerta}")
                     print("Esperando 1 minuto antes de analizar alertas...")
                     time.sleep(60)
+                    
                     conn = sqlite3.connect(db_name)
                     cursor = conn.cursor()
-                    cursor.execute(f"SELECT texto FROM alertas_established_{month}")
-                    alertas = cursor.fetchall()
-                    alerta_encontrada = False
-                    for alerta in alertas:
-                        if texto_alerta in alerta[0]:
-                            alerta_encontrada = True
-                            break
-                    if alerta_encontrada:
-                        return 'Proceso terminado por encontrar una alerta.'  # Esto detendrá la función aquí
-                    else:
+                    
+                    # Verifica si la tabla existe en la base de datos
+                    cursor.execute(f"PRAGMA table_info(alertas_established_{month})")
+                    table_info = cursor.fetchall()
+                    
+                    if len(table_info) == 0:  # Si no hay información de la tabla (tabla no existe)
                         conn.close()
-                        print("No se encontraron coincidencias en la base de datos.")
-                        print("Procediendo con la llamada. . .")
-                        with open('backup.py', 'r') as archivo:
-                            lineas = archivo.readlines()
-
-                        with open('backup.py', 'w') as archivo:
-                            for linea in lineas:
-                                if 'texto_b = ' in linea:
-                                    archivo.write(f'texto_b = "Alerta!, llamado de escalamiento. {texto_recibido}"  # Texto para la llamada\n')
-                                else:
-                                    archivo.write(linea)
-
-                        with open('otro_codigo.py', 'r') as archivo:
-                            lineas = archivo.readlines()
-
-                        with open('otro_codigo.py', 'w') as archivo:
-                            for linea in lineas:
-                                if 'texto = ' in linea:
-                                    archivo.write(f'texto = "{texto_recibido}"  # Texto para la llamada\n')
-                                else:
-                                    archivo.write(linea)
-
-                        print("Realizando llamada. . .")
-                        proceso = subprocess.Popen(['python3', 'otro_codigo.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                        salida, error = proceso.communicate()
-
-                        if error:
-                            return f'Error al ejecutar otro_codigo.py: {error.decode()}'
+                        print(f"La tabla alertas_established_{month} no existe.")
+                        print("Procediendo con la llamada...")
+                        procesar_alertas(texto_recibido)
+                    else:
+                        # La tabla existe, realiza la consulta normal de búsqueda de alertas
+                        cursor.execute(f"SELECT texto FROM alertas_established_{month}")
+                        alertas = cursor.fetchall()
+                        alerta_encontrada = False
+                        
+                        for alerta in alertas:
+                            if texto_alerta in alerta[0]:
+                                alerta_encontrada = True
+                                break
+                        
+                        if alerta_encontrada:
+                            return 'Proceso terminado por encontrar una alerta.'
                         else:
-<<<<<<< HEAD
-                            return f'Texto recibido y actualizado en otro_codigo.py. Ejecución exitosa.'               
-=======
-                            return f'Texto recibido y actualizado en otro_codigo.py. Ejecución exitosa.'            
->>>>>>> 05670caa41393ef4f46cc8a44706c9961f31317b
+                            conn.close()
+                            print("No se encontraron coincidencias en la base de datos.")
+                            print("Procediendo con la llamada...")
+                            procesar_alertas(texto_recibido)
                 else:
                     Guardar_en_DB_Established(texto_recibido)
 
@@ -443,7 +477,4 @@ def realizar_llamada_texto():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
-#------------------------------------------------------------------------------------------------# 
-
-
-
+    

@@ -7,7 +7,7 @@ import subprocess
 
 
 user = "+56999641574"  # Número de usuario
-texto = "Alerta!, el servicio Ping en la sucursal de: Tinguiririca, se encentra en estado: Critical. "  # Texto para la llamada
+texto = " Alerta!, el servicio Ping en la sucursal de: La Sona, se encuentra en estado: Critical. "  # Texto para la llamada
 lang = "es-ES-Standard-A"  # Idioma
 
 
