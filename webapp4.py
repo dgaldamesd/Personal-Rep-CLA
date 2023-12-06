@@ -54,14 +54,7 @@ def Guardar_en_DB_critical(texto):
     print(f'Guardando en la base de datos (Critical): {texto}')
 
 
-#--------------------------------------#
-
-
-
-
-
-
-
+#----------------FUNCION ENCARGADA DE ALMACENAR LAS ALERTAS CUANDO YA SE NORMALIZARON----#
 
 def Guardar_en_DB_Established(texto):
     try:
